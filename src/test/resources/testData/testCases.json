@@ -1,0 +1,37 @@
+[
+  {
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "balance": 100
+  },
+  {
+    "name": "Jane Smith",
+    "email": "jane.smith@example.com",
+    "balance": 200
+  },
+  {
+    "name": null,
+    "email": "missing.name@example.com",
+    "balance": 100
+  },
+  {
+    "name": "Missing Email",
+    "email": null,
+    "balance": 100
+  },
+  {
+    "name": "Invalid Balance",
+    "email": "invalid.balance@example.com",
+    "balance": -1
+  },
+  {
+    "name": "",
+    "email": "empty.name@example.com",
+    "balance": 100
+  },
+  {
+    "name": "John Doe",
+    "email": "invalid-email",
+    "balance": 100
+  }
+]
