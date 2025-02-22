@@ -2,6 +2,7 @@ package com;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import config.Config;
+import enums.Descriptions;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import model.Client;
@@ -16,7 +17,7 @@ import static io.restassured.RestAssured.given;
 import static org.testng.Assert.assertEquals;
 
 public class ClientApiTest {
-
+    private final String JSON_PATCH ="src/test/resources/testData/testCases.json";
     static {
         RestAssured.baseURI = Config.BASE_URL;
     }
@@ -25,7 +26,7 @@ public class ClientApiTest {
     public Object[][] loadTestData() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         List<Client> clients = objectMapper.readValue(
-                new File("src/test/resources/testData/testCases.json"),
+                new File(JSON_PATCH),
                 objectMapper.getTypeFactory().constructCollectionType(List.class, Client.class)
         );
 
@@ -49,8 +50,8 @@ public class ClientApiTest {
         assertEquals(response.getStatusCode(), 200);
 
         // Assert response body
-        assertEquals(response.jsonPath().getString("name"), client.getName(), "Ім\'я не співпадаз з очікуваним "+client.getName());
-        assertEquals(response.jsonPath().getString("email"), client.getEmail(), "Email не співпадаз з очікуваним "+client.getEmail());
-        assertEquals(response.jsonPath().getInt("balance"), client.getBalance(), "Баланс не співпадаз з очікуваним "+client.getBalance());
+        assertEquals(response.jsonPath().getString("name"), client.getName(), Descriptions.ERROR_NAME.getTestDescription() +client.getName());
+        assertEquals(response.jsonPath().getString("email"), client.getEmail(), Descriptions.ERROR_EMAIL.getTestDescription()+client.getEmail());
+        assertEquals(response.jsonPath().getInt("balance"), client.getBalance(), Descriptions.ERROR_BALANCE.getTestDescription() +client.getBalance());
     }
 }
