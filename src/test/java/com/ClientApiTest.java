@@ -1,15 +1,14 @@
 package com;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.model.DownloadCase;
 import config.Config;
 import enums.Descriptions;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import model.Client;
+import model.StructureCase;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -24,11 +23,7 @@ public class ClientApiTest {
 
     @DataProvider(name = "clientData")
     public Object[][] loadTestData() throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<Client> clients = objectMapper.readValue(
-                new File(JSON_PATCH),
-                objectMapper.getTypeFactory().constructCollectionType(List.class, Client.class)
-        );
+        List<StructureCase> clients = new DownloadCase().testData(JSON_PATCH);
 
         Object[][] data = new Object[clients.size()][1];
         for (int i = 0; i < clients.size(); i++) {
@@ -38,7 +33,7 @@ public class ClientApiTest {
     }
 
     @Test(dataProvider = "clientData")
-    public void testCreateClient(Client client) {
+    public void testCreateClient(StructureCase client) {
 
         Response response = given()
                 .contentType(Config.MIME_CODE)
@@ -47,7 +42,7 @@ public class ClientApiTest {
                 .post(Config.CLIENT_ENDPOINT);
 
         // Assert status code
-        assertEquals(response.getStatusCode(), 200);
+        assertEquals(response.getStatusCode(), 200, Descriptions.ERROR_200.getTestDescription());
 
         // Assert response body
         assertEquals(response.jsonPath().getString("name"), client.getName(), Descriptions.ERROR_NAME.getTestDescription() +client.getName());
